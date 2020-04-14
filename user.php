@@ -81,6 +81,46 @@ class user{
 					}
 			
 	}
+	
+	public function singupsimple()
+	{
+		$sql = "INSERT INTO users(name,email,password) VALUES('$this->name','$this->email','$this->password')";
+		$result = $this->conn->query($sql);
+		if($result)
+		{
+			
+			return "successfully inserted";
+			
+		}
+		else{
+			return "error: ".$this->conn->error;
+		}
+	}
+	public function loginsimple()
+	{
+		$sql = "SELECT * FROM users WHERE email='$this->email'";
+		$result = $this->conn->query($sql);
+		/* $numrow= $result->num_row  */
+		if($result->num_rows < 1)
+		{
+			$return = 0;
+			
+		}else
+		{
+			$row = $result -> fetch_assoc();
+			$db_pass= $row['password'];
+			if($db_pass == $this->password)
+			{
+				$return = 1;
+			}else{
+				$return = 2;
+			}
+			
+		}
+		
+		return $return;
+	}
+	
 }
 
 ?>

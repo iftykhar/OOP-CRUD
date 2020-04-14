@@ -1,25 +1,43 @@
 <?php
 if(isset($_POST["submit"])){
 	include 'db_conn.php';
+	require "user.php";
+	
+	$obj = new DbConnection();
+	$conn=$obj->getConnection();
+	$userClassObj = new user($conn);
 
+	$userClassObj->email 		=$_POST['email'];
+	$userClassObj->password 	=$_POST['password'];
 
-	$email=$_POST['email'];
-	$password=$_POST['password'];
-
-	if (empty($email)||empty($password))
+	if (empty($_POST['email'])||empty($_POST['password']))
 	{
-		header("Location:../loging.php");
+		header("Location: login.php?error=PassowrdEmptyOrEmail empty");
 		exit();
 	}
 	else
 	{
-		
+		$result = $userClassObj->loginsimple();
+		if($result == 0)
+		{
+			header("Location: login.php?error=No Account found");
+			exit();
+		}else if($result ==2)
+		{
+			header("Location: login.php?error=password Incorrect");
+			exit();
+		}else if($result ==1)
+		{
+			session_start();
+			$_SESSION['check']=1;
+			header("Location: index.php");
+			exit();
+		}
 	}
-
 }
 else
 {
-	header("Location:../login.php");
+	header("Location: login.php");
 	exit();
 }
 

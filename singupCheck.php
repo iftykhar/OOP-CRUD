@@ -23,7 +23,9 @@ if(isset($_POST['singup-submit'])){
 	$udb->password = $_POST['password'];
 	$udb->passwordRepete = $_POST['passwordRepete'];
 	
-	$var=$udb->singupCheck();
-	var_dump($var);
+	//$var=$udb->singupCheck();
+	$result = $udb->singupsimple();
+	
+	var_dump($result);
 
 }
